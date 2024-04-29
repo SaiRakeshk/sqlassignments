@@ -1,6 +1,6 @@
 create database techshops;
 use techshops;
--- Customers Table
+
 CREATE TABLE Customers (
     CustomerID INT PRIMARY KEY AUTO_INCREMENT,
     FirstName VARCHAR(50),
@@ -10,7 +10,7 @@ CREATE TABLE Customers (
     Address TEXT
 );
 
--- Products Table
+
 CREATE TABLE Products (
     ProductID INT PRIMARY KEY AUTO_INCREMENT,
     ProductName VARCHAR(100),
@@ -18,7 +18,7 @@ CREATE TABLE Products (
     Price DECIMAL(10, 2)
 );
 
--- Orders Table
+
 CREATE TABLE Orders (
     OrderID INT PRIMARY KEY AUTO_INCREMENT,
     CustomerID INT,
@@ -27,7 +27,7 @@ CREATE TABLE Orders (
     FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID)
 );
 
--- OrderDetails Table
+
 CREATE TABLE OrderDetails (
     OrderDetailID INT PRIMARY KEY AUTO_INCREMENT,
     OrderID INT,
@@ -37,7 +37,7 @@ CREATE TABLE OrderDetails (
     FOREIGN KEY (ProductID) REFERENCES Products(ProductID)
 );
 
--- Inventory Table
+
 CREATE TABLE Inventory (
     InventoryID INT PRIMARY KEY AUTO_INCREMENT,
     ProductID INT,
@@ -46,7 +46,7 @@ CREATE TABLE Inventory (
     FOREIGN KEY (ProductID) REFERENCES Products(ProductID)
 );
 
--- Inserting sample data into Customers
+
 INSERT INTO Customers (FirstName, LastName, Email, Phone, Address)
 VALUES
 ('Ravi', 'Kumar', 'ravi.kumar@example.com', '1234567890', '123 Main St, Bangalore'),
@@ -60,7 +60,7 @@ VALUES
 ('Rajesh', 'Verma', 'rajesh.verma@example.com', '9900112233', '606 Sun St, Lucknow'),
 ('Pooja', 'Chopra', 'pooja.chopra@example.com', '1122334455', '707 Moon St, Ahmedabad');
 
--- Inserting sample data into Products
+
 INSERT INTO Products (ProductName, Description, Price)
 VALUES
 ('Laptop', 'Dell Laptop', 800.00),
@@ -74,7 +74,7 @@ VALUES
 ('Router', 'Netgear Nighthawk', 150.00),
 ('Monitor', 'LG UltraGear', 700.00);
 
--- Inserting sample data into Orders
+
 INSERT INTO Orders (CustomerID, OrderDate, TotalAmount)
 VALUES
 (1, '2024-04-25', 1800.00),
@@ -88,7 +88,7 @@ VALUES
 (9, '2024-04-17', 600.00),
 (10, '2024-04-16', 850.00);
 
--- Inserting sample data into OrderDetails
+
 INSERT INTO OrderDetails (OrderID, ProductID, Quantity)
 VALUES
 (1, 1, 1),
@@ -102,7 +102,7 @@ VALUES
 (5, 9, 1),
 (5, 10, 1);
 
--- Inserting sample data into Inventory
+
 INSERT INTO Inventory (ProductID, QuantityInStock, LastStockUpdate)
 VALUES
 (1, 10, '2024-04-25'),
@@ -176,7 +176,7 @@ FROM Customers
 JOIN Orders ON Customers.CustomerID = Orders.CustomerID
 JOIN OrderDetails ON Orders.OrderID = OrderDetails.OrderID
 JOIN Products ON OrderDetails.ProductID = Products.ProductID
-WHERE Products.ProductName = '1'; -- 9
+WHERE Products.ProductName = '1'; 
 
 SELECT SUM(Orders.TotalAmount) AS TotalRevenue
 FROM Orders
