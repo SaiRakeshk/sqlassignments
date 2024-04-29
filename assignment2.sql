@@ -1,4 +1,5 @@
-CREATE database SIS;
+CREATE DATABASE SIS;
+
 CREATE TABLE Students (
     student_id INT PRIMARY KEY ,
     first_name VARCHAR(50),
@@ -133,6 +134,7 @@ SELECT s.first_name, s.last_name, SUM(p.amount) AS total_payments
 FROM Students s
 JOIN Payments p ON s.student_id = p.student_id
 WHERE s.student_id = 3;
+
 SELECT C.COURSE_NAME , COUNT(E.STUDENT_ID)AS STUDENTENROLLED FROM COURSES C 
 JOIN ENROLLMENTS E ON C.COURSE_ID=E.COURSE_ID GROUP BY C.COURSE_NAME;
 
@@ -140,21 +142,26 @@ SELECT s.first_name, s.last_name
 FROM Students s
 LEFT JOIN Enrollments e ON s.student_id = e.student_id
 WHERE e.student_id IS NULL;
-SELECT s.FIRST_NAME, s.LAST_NAME , c.COURSE_NAME FROM STUDENTS s 
-INNER JOIN ENROLLMENTS e ON e.STUDENT_ID=s.STUDENT_ID 
-INNER JOIN COURSES c  ON e.COURSE_ID = e.COURSE_ID;
 
-SELECT TEACHER.FIRST_NAME,TEACHER.LAST_NAME, TEACHER.TEACHER_ID FROM TEACHER JOIN Courses ON COURSES.TEACHER_ID=TEACHER.TEACHER_ID;
-SELECT STUDENTS.STUDENT_ID,STUDENTS.FIRST_NAME,STUDENTS.LAST_NAME FROM STUDENTS LEFT JOIN  PAYMENTS ON PAYMENTS.STUDENT_ID=STUDENTS.STUDENT_ID WHERE PAYMENTS.STUDENT_ID IS NULL;
-SELECT COURSES.COURSE_NAME FROM COURSES JOIN ENROLLMENTS ON ENROLLMENTS.COURSE_ID=COURSES.COURSE_ID WHERE COURSES.COURSE_ID IS NULL;
+SELECT s.first_name, s.last_name , c.course_name FROM Students s 
+INNER JOIN Enrollments e ON e.student_id=s.student_id 
+INNER JOIN Courses c  ON e.course_id = e.course_id;
+
+SELECT TEACHER.first_name,TEACHER.last_name, TEACHER.teacher_id FROM TEACHER JOIN Courses ON COURSES.teacher_id=TEACHER.teacher_id;
+
+SELECT STUDENTS.student_id,STUDENTS.first_name,STUDENTS.last_name FROM STUDENTS LEFT JOIN  PAYMENTS ON PAYMENTS.student_id=STUDENTS.student_id WHERE PAYMENTS.student_id IS NULL;
+
+SELECT COURSES.course_name FROM COURSES JOIN ENROLLMENTS ON ENROLLMENTS.course_id=COURSES.course_id WHERE COURSES.course_id IS NULL;
+
 SELECT one.student_id 
 FROM enrollments AS one 
 JOIN enrollments AS two ON one.student_id = two.enrollment_id 
 GROUP BY  one.student_id 
 HAVING COUNT(two.student_id)>1;
-SELECT TEACHER.FIRST_NAME,TEACHER.LAST_NAME FROM TEACHER 
-LEFT JOIN COURSES ON COURSES.TEACHER_ID=TEACHER.TEACHER_ID 
-WHERE COURSES.TEACHER_ID IS NULL;
+
+SELECT TEACHER.first_name,TEACHER.last_name FROM TEACHER 
+LEFT JOIN COURSES ON COURSES.teacher_id=TEACHER.teacher_id 
+WHERE COURSES.teacher_id IS NULL;
 
 -- TASK 4
 
@@ -164,46 +171,55 @@ FROM (
     FROM Enrollments
     GROUP BY course_id
 ) AS course_enrollments;
-SELECT S.FIRST_NAME,S.LAST_NAME,P.AMOUNT FROM STUDENTS S 
-JOIN PAYMENTS P ON S.STUDENT_ID=P.STUDENT_ID 
-WHERE P.AMOUNT = (SELECT MAX(AMOUNT) FROM PAYMENTS);
+
+SELECT S.first_name,S.last_name,P.amount FROM STUDENTS S 
+JOIN PAYMENTS P ON S.student_id=P.student_id 
+WHERE P.amount = (SELECT MAX(amount) FROM PAYMENTS);
+
 SELECT c.course_name, COUNT(e.student_id) AS enrollment_count
 FROM Courses c
 LEFT JOIN Enrollments e ON c.course_id = e.course_id
 GROUP BY c.course_name
 HAVING enrollment_count = (SELECT MAX(enrollment_count) FROM (SELECT COUNT(student_id) AS enrollment_count FROM Enrollments GROUP BY course_id) AS max_enrollments);
+
 SELECT t.first_name, t.last_name, SUM(p.amount) AS total_payments
 FROM Teacher t
 JOIN Courses c ON t.teacher_id = c.teacher_id
 JOIN Enrollments e ON c.course_id = e.course_id
 JOIN Payments p ON e.student_id = p.student_id
 GROUP BY t.first_name, t.last_name;
+
 SELECT s.first_name, s.last_name
 FROM Students s
 WHERE (SELECT COUNT(DISTINCT course_id) FROM Courses) = (SELECT COUNT(DISTINCT course_id) FROM Enrollments WHERE student_id = s.student_id);
+
 SELECT t.first_name, t.last_name
 FROM Teacher t
 WHERE t.teacher_id NOT IN (SELECT teacher_id FROM Courses);
+
 SELECT AVG(TIMESTAMPDIFF(YEAR, date_of_birth, CURDATE())) AS average_age
 FROM Students;
+
 SELECT c.course_name
 FROM Courses c
 WHERE c.course_id NOT IN (SELECT course_id FROM Enrollments);
+
 SELECT s.first_name, s.last_name, c.course_name, SUM(p.amount) AS total_payments
 FROM Students s
 JOIN Payments p ON s.student_id = p.student_id
 JOIN Enrollments e ON s.student_id = e.student_id
 JOIN Courses c ON e.course_id = c.course_id
 GROUP BY s.first_name, s.last_name, c.course_name;
+
 SELECT s.first_name, s.last_name, SUM(p.amount) AS total_payments
 FROM Students s
 LEFT JOIN Payments p ON s.student_id = p.student_id
 GROUP BY s.first_name, s.last_name;
+
 SELECT c.course_name, COUNT(e.student_id) AS enrolled_students_count
 FROM Courses c
 LEFT JOIN Enrollments e ON c.course_id = e.course_id
 GROUP BY c.course_name;
+
 SELECT AVG(amount) AS average_payment_amount
 FROM Payments;
-
-
