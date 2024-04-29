@@ -1,4 +1,5 @@
-create database bankingsystem;
+CREATE DATABASE bankingsystem;
+
 CREATE TABLE Customers (
     customer_id INT PRIMARY KEY,
     first_name VARCHAR(50),
@@ -25,7 +26,9 @@ CREATE TABLE Transactions (
     transaction_date DATE,
     FOREIGN KEY (account_id) REFERENCES Accounts(account_id)
 );
+
 -- task 2
+
 INSERT INTO Customers (customer_id,first_name, last_name, DOB, email, phone_number, address)
 VALUES 
 (1,'Arjun', 'Reddy', '1990-05-15', 'arjun@email.com', '1234567890', '123 Main Street, Bangalore'),
